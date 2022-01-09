@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="http://localhost:9001">
+       <style>
+
+           * {
+               background-color: black;
+               color: white;
+           }
+           
+           input {
+               width: 60%;
+               padding: 20px 20px;
+               background-color: white;
+               color: black;
+               margin-left: 20%;
+               margin-right: 20%;
+               position: absolute;
+               bottom: 0;
+               margin-bottom: 20px;
+               border-radius: 5px;
+               font-size: 15px;
+           }
+
+           button {
+               padding: 20px 30px;
+               width: 30%;
+               border-radius: 5px;
+               background-color: palevioletred;
+               font-weight: bold;
+               border: none;
+           }
+       </style>
+
+    </head>
+    <body>
+
+      <div>
+          <input type="text" placeholder="start typing" id="textInput">
+          <button id="submit">submit</button>
+      </div>
+
+    </body>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+
+        $( document ).ready(function() {
+            var socket = io();
+
+        (function(){
+            socket.emit("connect-to-chat-server", {sender_id: 1})
+        })();
+
+       function sendPrivateMessage(){
+
+          var element = document.getElementById("textInput");
+          var value = element.value;
+
+          var chat = {
+              reciever_id: 2, 
+              sender_id: 1, 
+              message: value, 
+              audio_message: null,
+              image: null,
+              mime_type: null,
+              isText: true, 
+              isPicture: false, 
+              isAudio: false
+          }
+
+          socket.emit("private-message", chat);
+            
+        }
+
+        socket.on("incoming-private-message", function(data, callback){
+            console.log(data);
+        });
+
+        var element = document.getElementById("submit");
+        element.addEventListener("click", sendPrivateMessage)
+
+        ///////Media Device/////////////////////
+        async function getConnectedDevices(type) {
+             const devices = await navigator.mediaDevices.enumerateDevices();
+             return devices.filter(device => device.kind === type)
+        }
+
+        // Open camera with at least minWidth and minHeight capabilities
+        async function openCamera(cameraId, minWidth, minHeight) {
+            const constraints = {
+                'audio': {'echoCancellation': true},
+                'video': {
+                'deviceId': cameraId,
+                'width': {'min': minWidth},
+                'height': {'min': minHeight}
+                }
+            }
+
+            return await navigator.mediaDevices.getUserMedia(constraints);
+        }
+
+        const cameras = getConnectedDevices('videoinput');
+        if (cameras && cameras.length > 0) {
+            // Open first available video camera with a resolution of 1280x720 pixels
+            const stream = openCamera(cameras[0].deviceId, 1280, 720);
+        }
+ 
+        //Make a Call.
+        async function makeACall(){
+            const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+            const peerConnection = new RTCPeerConnection(configuration);
+            
+            ///Listen for Answers 
+            socket.on("webRTCAnswer", function(data, callback){
+                if(data.recipient == "recipientEmail" && data.isWebRTCAnswer == true){
+                      const remoteDescription = new RTCSessionDescription(data.webRTCAnswer);
+                      await peerConnection.setRemoteDescription(remoteDescription)
+                }
+            })
+
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            
+            data.isWebRTCOffer = true;
+            data.webRTCOffer = offer;
+            
+            //sending out offer
+            socket.emit("webRTCOffer", data);  
+
+            ///Listen For Ice Candidate
+            peerConnection.addEventListener("icecandidate", event => {
+                if(event.candidate){
+                    data.recipient = "recipientEmail";
+                    data.iceCandidate = event.candidate;
+                    socket.emit("new-ice-candidate", data)
+                }
+            });
+
+            //Add remote Ice Candidate
+            socket.on("new-ice-candidate-found-on-remote", function(data, callback){
+                if(data.iceCandidate && data.recipientEmail == "recipientEmail"){
+                    try{
+                        await peerConnection.addIceCandidate(data.iceCandidate);
+                    }catch(exception){
+                        console.log("Error adding incoming ice-candidate", exception);
+                    }
+                }
+            })
+        }
+
+        // Accept a call.
+        async function acceptACall(){
+            const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+            const connectionPair = new RTCPeerConnection(configuration);
+
+            // Listen for offers
+            socket.on("webRTCOffer", function(data, callback){
+                if(data.callerEmail == "myEmail" && data.isWebRTCOffer == true){
+                    connectionPair.setRemoteDescription(new RTCSessionDescription(data.webRTCOffer));
+                    const answer = connectionPair.createAnswer();
+                    await connectionPair.setLocalDescription(remoteDescription);
+
+                    data.isWebRTCAnswer = true;
+                    data.webRTCAnswer = answer;
+                     
+                    //sending out answer.
+                    socket.emit("webRTCAnswer", data);
+                 }
+            });
+
+             ///Listen For Ice Candidate
+             connectionPair.addEventListener("icecandidate", event => {
+                if(event.candidate){
+                    data.callerEmail = "callerEmail";
+                    data.iceCandidate = event.candidate;
+                    socket.emit("new-ice-candidate", data)
+                }
+            });
+
+            //Add remote Ice Candidate
+            socket.on("new-ice-candidate-found-on-remote", function(data, callback){
+                if(data.iceCandidate && data.recipientEmail == "callerEmail"){
+                    try{
+                        await connectionPair.addIceCandidate(data.iceCandidate);
+                    }catch(exception){
+                        console.log("Error adding incoming ice-candidate", exception);
+                    }
+                }
+            })
+        }
+
+    });
+       
+    </script>
+    
+</html>

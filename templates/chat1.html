@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="http://localhost:9001/">
+       <style>
+           
+           * {
+               background-color: black;
+               color: white;
+           }
+
+           input {
+               width: 60%;
+               padding: 20px 20px;
+               background-color: white;
+               color: black;
+               margin-left: 20%;
+               margin-right: 20%;
+               position: absolute;
+               bottom: 0;
+               margin-bottom: 20px;
+               border-radius: 5px;
+               font-size: 15px;
+           }
+
+           button {
+               padding: 20px 30px;
+               width: 30%;
+               border-radius: 5px;
+               background-color: palevioletred;
+               font-weight: bold;
+               border: none;
+           }
+       </style>
+       <base href="localhost:9000">
+    </head>
+    <body>
+
+      <div>
+          <input type="text" placeholder="start typing" id="textInput">
+          <button id="submit">submit</button>
+      </div>
+
+    </body>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $( document ).ready(function() {
+            console.log( "ready!" );
+
+            var socket = io();
+
+          (function(){
+              socket.emit("connect-to-chat-server", {sender_id: 2})
+          })();
+         
+          function sendPrivateMessage(){
+
+              var element = document.getElementById("textInput");
+              var value = element.value;
+ 
+             var chat = {
+              reciever_id: 1, 
+              sender_id: 2, 
+              message: value, 
+              audio_message: null,
+              image: null,
+              mime_type: null,
+              isText: true, 
+              isPicture: false, 
+              isAudio: false
+             }
+
+              socket.emit("private-message", chat);
+
+          }
+
+          socket.on("incoming-private-message", function(data, callback){
+             console.log(data);
+          });
+
+          var element = document.getElementById("submit");
+          element.addEventListener("click", sendPrivateMessage)
+
+        }); 
+        
+
+    </script>
+    
+</html>

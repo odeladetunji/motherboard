@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="http://localhost:9001">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+       <style>
+
+           * {
+               /* background-color: black; */
+               padding: 0px;
+               margin: 0px;
+           }
+ 
+           .homepage {
+               display: flex;
+               flex-wrap: nowrap;
+               position: fixed;
+               width: 100%;
+           }
+
+           .caller {
+               width: 50%;
+               height: 1200px;
+               background-color: rgb(29, 27, 27);
+               /* border-right: none; */
+               padding-top: 300px;
+           }
+
+           .caller i {
+               color: white;
+               font-size: 40px;
+           }
+
+           .recipient {
+               width: 50%;
+               height: 1200px;
+               background-color: rgb(29, 27, 27);
+               border-left: 2px solid green;
+               background-color: hsl(270, 3%, 12%);
+               
+           }
+
+           .caller #firstPerson {
+               border: 1px solid white;
+               padding: 20px;
+               font-size: 200px;
+               margin-left: 30%;
+               border-radius: 50px;
+           }
+
+           .recipient #secondPerson {
+               border: 1px solid white;
+               padding: 20px;
+               font-size: 200px;
+               margin-left: 30%;
+               border-radius: 50px;
+               /* margin-top: ; */
+               color: white;
+               margin-top: 300px;
+           }
+
+           #phone {
+               background-color: green;
+               color: black;
+               float: right;
+               font-size: 30px;
+               padding: 20px;
+               border-radius: 40px;
+               margin-top: 20px;
+               margin-right: 20px;
+               border: 1px solid white;
+               cursor: pointer;
+           }
+
+       </style>
+
+    </head>
+    <body>
+
+      <div class="homepage">
+          <div class="caller">
+            <!-- <i class="material-icons md-18" id="cancellcall">cancellcall</i> -->
+             <i class="material-icons md-18" id="firstPerson">person</i>
+          </div>
+          <div class="recipient">
+            <i class="material-icons md-18" id="phone">phone</i>
+            <i class="material-icons md-18" id="secondPerson">person</i>
+          </div>
+      </div>
+
+    </body>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            
+        });
+                   
+    </script>
+    
+</html>
+

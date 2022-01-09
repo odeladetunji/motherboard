@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="http://localhost:9001">
+       <style>
+                    
+           * {
+               /* background-color: black;
+               color: white; */
+
+               padding: 0px;
+               margin: 0px;
+           }
+ 
+           .homepage {
+               display: flex;
+               flex-wrap: nowrap;
+               position: fixed;
+               width: 100%;
+           }
+
+           .caller {
+               width: 50%;
+               height: 900px;
+               background-color: silver;
+               border-right: none;
+               padding-top: 300px;
+           }
+
+           .caller input{
+               width: 70%;
+               padding: 15px;
+               margin-left: 15%;
+               color: black;
+               font-weight: bold;
+               height: 20px;
+               border: 1px solid black;
+               border-radius: 5px;
+               margin-bottom: 20px;
+               border: none;
+           }
+
+           .caller label {
+               margin-left: 15px;
+               color: black;
+               font-weight: bold;
+               /* margin-top: 40%; */
+               margin-bottom: 10px;
+               margin-left: 15%;
+           }
+
+           .caller label:focus {
+               border: 1px solid green;
+           }
+
+           .caller button {
+               background-color: green;
+               color: white;
+               border: 1px solid white;
+               border-radius: 5px;
+               padding: 10px 25px;
+               margin-left: 15%;
+           }
+
+           .recipient {
+               width: 50%;
+               height: 900px;
+               background-color: silver;
+               border-right: none;
+               background-color: hsl(288, 84%, 15%);
+           }
+
+           .recipient p {
+               font-weight: bold;
+               font-size: 25px;
+               text-align: center;
+               margin-top: 45%;
+               color: white;
+           }
+
+       </style>
+
+    </head>
+    <body>
+
+      <div class="homepage">
+          <div class="caller">
+              
+              <label>Login</label>
+              <br>
+              <br>
+              <input type="text" placeholder="Please enter your name">
+              <button>submit</button>
+          </div>
+          <div class="recipient">
+              <p>MotherBoard</p>
+          </div>
+      </div>
+
+    </body>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            
+        });
+                   
+    </script>
+    
+</html>
