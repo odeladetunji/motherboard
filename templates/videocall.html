@@ -11,11 +11,10 @@
                margin: 0px;
            }
  
-           .homepage {
+           /* .homepage {
               width: 100%;
               height: 1200px;
               background-color: rgb(29, 27, 27);
-              /* padding-top: 20px; */
               position: fixed;
            }
 
@@ -26,12 +25,11 @@
                font-size: 30px;
                padding: 10px;
                border-radius: 40px;
-               /* margin-top: 20px; */
+
                margin-right: 20px;
                border: 1px solid white;
                cursor: pointer;
                margin-top: 20px;
-               
            }
 
            #secondPerson {
@@ -40,23 +38,122 @@
                font-size: 200px;
                margin-left: 40%;
                border-radius: 50px;
+               color: white;
+               margin-top: 300px;
+           } */
+
+           .homepage {
+               display: flex;
+               flex-wrap: nowrap;
+               position: fixed;
+               width: 100%;
+           }
+
+           .caller {
+               width: 50%;
+               height: 1200px;
+               background-color: black;
+               /* background-color: rgb(29, 27, 27);
+                */
+               /* border-right: none; */
+               padding-top: 300px;
+           }
+
+           .caller i {
+               color: white;
+               font-size: 40px;
+           }
+
+           .recipient {
+               width: 50%;
+               height: 1200px;
+               background-color: rgb(29, 27, 27);
+               background-color: black;
+               /* border-left: 2px solid green; */
+               /* background-color: hsl(270, 3%, 12%); */
+               
+           }
+
+           .caller #firstPerson {
+               border: 1px solid white;
+               padding: 20px;
+               font-size: 200px;
+               margin-left: 30%;
+               border-radius: 50px;
+           }
+
+           .recipient #secondPerson {
+               border: 1px solid white;
+               padding: 20px;
+               font-size: 200px;
+               margin-left: 30%;
+               border-radius: 50px;
                /* margin-top: ; */
                color: white;
                margin-top: 300px;
            }
 
+           #phone {
+               background-color: green;
+               color: black;
+               float: right;
+               font-size: 30px;
+               padding: 20px;
+               border-radius: 40px;
+               margin-top: 20px;
+               margin-right: 20px;
+               border: 1px solid white;
+               cursor: pointer;
+           }
+
+           #myVideo {
+               position: absolute;
+               z-index: 2;
+               bottom: 10px;
+               right: 10px;
+               width: 320px;
+               height: 240px;
+               background-color: black;
+           }
+
+           #rightVideo {
+               top: 150px;
+               position: fixed;
+               width: 704px;
+               height: 544px;
+               background-color: black;
+           }
+
+           #leftVideo {
+               position:fixed;
+               top: 150px;
+               width: 704px;
+               height: 544px;
+               background-color: black;
+           }
            
 
        </style>
 
     </head>
     <body>
-
-      <div class="homepage">
+      <!-- <div class="homepage">
             <i class="material-icons md-18" id="firstPerson">cancellcall</i>
             <i class="material-icons md-18" id="secondPerson">person</i>
       </div>
+      <video id="myVideo" autoplay playsinline controls="false" width="320" height="240"></video> -->
 
+      <div class="homepage">
+        <div class="caller">
+           <!-- <i class="material-icons md-18" id="firstPerson">person</i> -->
+           <video id="leftVideo" autoplay playsinline controls="false" width="320" height="240"></video>
+        </div>
+        <div class="recipient">
+          <!-- <i class="material-icons md-18" id="phone">phone</i>
+          <i class="material-icons md-18" id="secondPerson">person</i> -->
+          <video id="rightVideo" autoplay playsinline controls="false" width="320" height="240"></video>
+        </div>
+    </div>
     </body>
     <!-- <script src="/socket.io/socket.io.js"></script> -->
     
@@ -64,9 +161,219 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
 
-        $(document).ready(function() {
+        $( document ).ready(function() {
+        //     var socket = io();
+
+        // (function(){
+        //     socket.emit("connect-to-chat-server", {sender_id: 1})
+        // })();
+
+    //    function sendPrivateMessage(){
+
+    //       var element = document.getElementById("textInput");
+    //       var value = element.value;
+
+    //       var chat = {
+    //           reciever_id: 2, 
+    //           sender_id: 1, 
+    //           message: value, 
+    //           audio_message: null,
+    //           image: null,
+    //           mime_type: null,
+    //           isText: true, 
+    //           isPicture: false, 
+    //           isAudio: false
+    //       }
+
+    //       socket.emit("private-message", chat);
             
-        });
+    //     }
+
+    //     socket.on("incoming-private-message", function(data, callback){
+    //         console.log(data);
+    //     });
+
+    //     var element = document.getElementById("submit");
+    //     element.addEventListener("click", sendPrivateMessage)
+
+        // ///////Media Device/////////////////////
+        // async function getConnectedDevices(type) {
+        //      const devices = await navigator.mediaDevices.enumerateDevices();
+        //      return devices.filter(device => device.kind === type)
+        // }
+
+        // // Open camera with at least minWidth and minHeight capabilities
+        // async function openCamera(cameraId, minWidth, minHeight) {
+        //     const constraints = {
+        //         'audio': {'echoCancellation': true},
+        //         'video': {
+        //         'deviceId': cameraId,
+        //         'width': {'min': minWidth},
+        //         'height': {'min': minHeight}
+        //         }
+        //     }
+
+        //     return await navigator.mediaDevices.getUserMedia(constraints);
+        // }
+
+        // // const cameras = getConnectedDevices('videoinput');
+        // // if (cameras && cameras.length > 0) {
+        // //     // Open first available video camera with a resolution of 1280x720 pixels
+        // //     const stream = openCamera(cameras[0].deviceId, 1280, 720);
+        // // }
+ 
+        // async function playVideoFromCamera() {
+        //     try {
+        //            const stream;
+        //            const cameras = getConnectedDevices('videoinput');
+        //            if (cameras && cameras.length > 0) {
+        //            // Open first available video camera with a resolution of 1280x720 pixels
+        //               stream = openCamera(cameras[0].deviceId, 1280, 720);
+        //            }
+        //            const videoElement = document.querySelector('video#myVideo');
+        //            videoElement.srcObject = stream;
+        //     } catch(error) {
+        //            console.error('Error opening video camera.', error);
+        //     }
+        // }
+        // //Make a Call.
+        // async function makeACall(){
+        //     const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+        //     const peerConnection = new RTCPeerConnection(configuration);
+            
+        //     ///Listen for Answers 
+        //     socket.on("webRTCAnswer", function(data, callback){
+        //         if(data.recipient == "recipientEmail" && data.isWebRTCAnswer == true){
+        //               const remoteDescription = new RTCSessionDescription(data.webRTCAnswer);
+        //               await peerConnection.setRemoteDescription(remoteDescription)
+        //         }
+        //     })
+
+        //     const offer = await peerConnection.createOffer();
+        //     await peerConnection.setLocalDescription(offer);
+            
+        //     data.isWebRTCOffer = true;
+        //     data.webRTCOffer = offer;
+            
+        //     //sending out offer
+        //     socket.emit("webRTCOffer", data);  
+
+        //     ///Listen For Ice Candidate
+        //     peerConnection.addEventListener("icecandidate", event => {
+        //         if(event.candidate){
+        //             data.recipient = "recipientEmail";
+        //             data.iceCandidate = event.candidate;
+        //             socket.emit("new-ice-candidate", data)
+        //         }
+        //     });
+
+        //     //Add remote Ice Candidate
+        //     socket.on("new-ice-candidate-found-on-remote", function(data, callback){
+        //         if(data.iceCandidate && data.recipientEmail == "recipientEmail"){
+        //             try{
+        //                 await peerConnection.addIceCandidate(data.iceCandidate);
+        //             }catch(exception){
+        //                 console.log("Error adding incoming ice-candidate", exception);
+        //             }
+        //         }
+        //     })
+        // }
+
+        // // Accept a call.
+        // async function acceptACall(){
+        //     const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+        //     const connectionPair = new RTCPeerConnection(configuration);
+
+        //     // Listen for offers
+        //     socket.on("webRTCOffer", function(data, callback){
+        //         if(data.callerEmail == "myEmail" && data.isWebRTCOffer == true){
+        //             connectionPair.setRemoteDescription(new RTCSessionDescription(data.webRTCOffer));
+        //             const answer = connectionPair.createAnswer();
+        //             await connectionPair.setLocalDescription(remoteDescription);
+
+        //             data.isWebRTCAnswer = true;
+        //             data.webRTCAnswer = answer;
+                     
+        //             //sending out answer.
+        //             socket.emit("webRTCAnswer", data);
+        //          }
+        //     });
+
+        //      ///Listen For Ice Candidate
+        //      connectionPair.addEventListener("icecandidate", event => {
+        //         if(event.candidate){
+        //             data.callerEmail = "callerEmail";
+        //             data.iceCandidate = event.candidate;
+        //             socket.emit("new-ice-candidate", data)
+        //         }
+        //     });
+
+        //     //Add remote Ice Candidate
+        //     socket.on("new-ice-candidate-found-on-remote", function(data, callback){
+        //         if(data.iceCandidate && data.recipientEmail == "callerEmail"){
+        //             try{
+        //                 await connectionPair.addIceCandidate(data.iceCandidate);
+        //             }catch(exception){
+        //                 console.log("Error adding incoming ice-candidate", exception);
+        //             }
+        //         }
+        //     })
+        // }
+
+    });
+
+     ///////Media Device/////////////////////
+        async function getConnectedDevices(type) {
+             const devices = await navigator.mediaDevices.enumerateDevices();
+             return devices.filter(device => device.kind === type)
+        }
+
+        // Open camera with at least minWidth and minHeight capabilities
+        async function openCamera(cameraId, minWidth, minHeight) {
+            const constraints = {
+                // 'audio': {'echoCancellation': true},
+                'audio': false,
+                'video': {
+                'deviceId': cameraId,
+                'width': {'min': minWidth},
+                'height': {'min': minHeight}
+                }
+            }
+
+            console.log(cameraId)
+            return await navigator.mediaDevices.getUserMedia(constraints);
+        }
+
+        // const cameras = getConnectedDevices('videoinput');
+        // if (cameras && cameras.length > 0) {
+        //     // Open first available video camera with a resolution of 1280x720 pixels
+        //     const stream = openCamera(cameras[0].deviceId, 1280, 720);
+        // }
+
+        async function playVideoFromCamera() {
+
+            try {
+                   var stream = null;
+                   const cameras = await getConnectedDevices('videoinput');
+                   console.log(cameras.length);
+                   if (cameras && cameras.length > 0) {
+                   // Open first available video camera with a resolution of 1280x720 pixels
+                      stream = await openCamera(cameras[0].deviceId, 1280, 720);
+                   }
+                //    const videoElement = document.getElementById('myVideo');
+                //    videoElement.srcObject = stream;
+                   const leftVideo = document.getElementById('leftVideo');
+                   leftVideo.srcObject = stream;
+                   const rightVideo = document.getElementById('rightVideo');
+                   rightVideo.srcObject = stream;
+
+            } catch(error) {
+                   console.error('Error opening video camera.', error);
+            }
+        }
+
+        playVideoFromCamera();
+        console.log("this function was called")
                    
     </script>
     
